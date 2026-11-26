@@ -13,5 +13,13 @@ export function Profile(){const {user,refresh,notify}=useStudio(),[busy,setBusy]
    location.assign(result.url);
   }catch(error){notify(error.message,'error');setBusy(false);}
  }
- return <form className="panel stack profile-form" onSubmit={save}><label>Email<input value={user.email} readOnly/></label><label>Full name<input name="name" defaultValue={user.name} required maxLength="100"/></label><label>Phone number<input name="phone" type="tel" defaultValue={user.phone} maxLength="35"/></label><label>Profile image URL<input name="image" type="url" defaultValue={user.image}/></label><button className="button fit" disabled={busy}>{busy?'Saving…':'Save changes'}</button><button type="button" className="outline fit" disabled={busy} onClick={connectGoogle}>Connect Google account</button></form>;
+ const [sandboxSecret,setSandboxSecret]=useState('');
+ async function configureSandbox(){
+  setBusy(true);
+  try{
+   const result=await request('/payments/sandbox-webhook',{method:'POST',secure:true});
+   setSandboxSecret(result.secret);
+  }catch(error){notify(error.message,'error');}finally{setBusy(false);}
+ }
+ return <form className="panel stack profile-form" onSubmit={save}><label>Email<input value={user.email} readOnly/></label><label>Full name<input name="name" defaultValue={user.name} required maxLength="100"/></label><label>Phone number<input name="phone" type="tel" defaultValue={user.phone} maxLength="35"/></label><label>Profile image URL<input name="image" type="url" defaultValue={user.image}/></label><button className="button fit" disabled={busy}>{busy?'Saving…':'Save changes'}</button><button type="button" className="outline fit" disabled={busy} onClick={connectGoogle}>Connect Google account</button>{user.role==='admin'&&<><button type="button" className="outline fit" disabled={busy||Boolean(sandboxSecret)} onClick={configureSandbox}>Set up Stripe Sandbox webhook</button>{sandboxSecret&&<label>Sandbox webhook signing secret<input type="password" value={sandboxSecret} readOnly autoComplete="off"/></label>}</>}</form>;
 }
