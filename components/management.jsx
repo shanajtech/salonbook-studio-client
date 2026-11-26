@@ -14,7 +14,7 @@ export function ServicesAdmin(){
   const {image,...fields}=Object.fromEntries(new FormData(event.currentTarget));
   try{
    if(image?.size){
-    if(!image.type.startsWith('image/')||image.size>5000000)throw Error('Choose an image smaller than 5 MB.');
+    if(!image.type.startsWith('image/')||image.size>3000000)throw Error('Choose an image of 3 MB or less.');
     fields.imageData=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Could not read image.'));reader.readAsDataURL(image);});
    }
    await request('/services'+(edit._id?'/'+edit._id:''),{method:edit._id?'PUT':'POST',secure:true,body:fields});setEdit(null);notify('Service saved.');reload();
