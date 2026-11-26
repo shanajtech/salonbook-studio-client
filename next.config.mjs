@@ -1,0 +1,1 @@
+export default {async rewrites(){const origin=process.env.API_BASE_URL||'http://localhost:4000';return [{source:'/api/:path*',destination:origin.replace(/\/$/,'')+'/api/:path*'}]}};
