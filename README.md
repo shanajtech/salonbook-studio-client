@@ -11,4 +11,4 @@ An editorial salon booking experience for Dhaka with Next.js, React and an Expre
 
 [Client repository](https://github.com/shanajtech/salonbook-studio-client) · [Server repository](https://github.com/shanajtech/salonbook-studio-server)
 
-Live deployment pending provider configuration.
+[Live website](https://salonbook-studio-client-ktn7.vercel.app) · [API health](https://salonbook-studio-server.vercel.app/api/health)
